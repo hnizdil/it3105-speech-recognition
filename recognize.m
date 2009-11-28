@@ -8,6 +8,6 @@ function [ word ] = recognize( filepath )
 data = wavread(filepath);   %capture data from wav-file
 data = dataPrep(data);  %extract features from data
 c = classifier;
-word = classify(c,data);
+word = c.classify(data);
 
 end
