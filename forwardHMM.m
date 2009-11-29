@@ -6,7 +6,7 @@ for t = 0:totalTime-1
 % This amounts to calculating likelihoods based on observation model.
 obsVec = zeros(hmm.noHidden,1);
 for state = 1:hmm.noHidden
-obsVec(state) = calcLikelihood(data(:,t+1), hmm.obsModels{state});
+obsVec(state) = calcLikelihood(data(:,:,t+1), hmm.obsModels{state});
 end
 % Do ‘forward iterations’:
 if t==0
@@ -18,4 +18,6 @@ end
 normalizer = sum(fwd_messages(:, t+1));
 fwd_messages(:, t+1) = fwd_messages(:, t+1) ./ normalizer;
 log_lik = log_lik + log(normalizer);
+end
+
 end

@@ -14,7 +14,7 @@ for i=1:dim(2)  %windowing and fft
     F(:,i)=fft(frames(:,i).*hamming(size(frames,1)),NFFT);
 end
 F = abs(F(1:NFFT/2,:))./(2*pi);
-freq = Fs/2*linspace(0,1,NFFT/2);
+freq = linspace(0,1,NFFT/2); %normalized version (for real values *Fs/2)
 noFeatures = 5;
 res=zeros(noFeatures,2,dim(2)); %3-D array for feature vectors
 for i=1:dim(2)  %go through all frames
