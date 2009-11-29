@@ -5,8 +5,8 @@ function [ word ] = recognize( filepath )
 %   output: string representation of the found word (start, stop, left,
 %           right.
 
-data = wavread(filepath);   %capture data from wav-file
-data = dataPrep(data);  %extract features from data
+[data Fs nbits] = wavread(filepath);   %capture data from wav-file
+data = dataPrep(data, Fs);  %extract features from data
 c = classifier;
 word = c.classify(data);
 
