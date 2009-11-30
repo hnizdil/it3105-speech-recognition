@@ -1,9 +1,19 @@
 function [ p ] = calcLikelihood( data, model )
-%CALCLIKELIHOOD Summary of this function goes here
-%   Detailed explanation goes here
-mu = model.mu;
+%CALCLIKELIHOOD calculates the probability of an observation
+%   if model=0 then µ=0
+n = size(data,1);
+if(model == 0)
+    mu = 0;
+else
+    mu = model.mu;
+end;    
 %sigma = model.sigma;
 p = mvnpdf(data,mu);%,sigma);
-p = 0.5*p(1)+0.25*p(2)+0.125*p(3)+0.0625*(p(4)+p(5));
-
+c = logspace(0,1,n);
+c = c ./ sum(c);
+c = fliplr(c);
+res = 0;
+for i = 1:n     %weight the different probabilities
+    res = res + (p(i)*c(i));
+end
 end
