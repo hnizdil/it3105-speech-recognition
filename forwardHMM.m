@@ -1,12 +1,12 @@
 function [log_lik fwd_messages] = forwardHMM(hmm, data)
-log_lik = 0; totalTime = size(data,2);
+log_lik = 0; totalTime = size(data,3);
 fwd_messages = zeros(hmm.noHidden, totalTime);
 for t = 0:totalTime-1
 % Calculate the observation matrix.
 % This amounts to calculating likelihoods based on observation model.
 obsVec = zeros(hmm.noHidden,1);
 for state = 1:hmm.noHidden
-obsVec(state) = calcLikelihood(data(:,:,t+1), hmm.obsModels{state});
+obsVec(state) = calcLikelihood(data(:,:,t+1), hmm.obsModel{state});
 end
 % Do ‘forward iterations’:
 if t==0

@@ -21,10 +21,11 @@ classdef hmm
            %random init values for probabilities
            h.priorHidden = rand(n,1);
            h.priorHidden = h.priorHidden ./ sum(h.priorHidden);
-           h.dynModel = rand(n);   
+           h.dynModel = rand(n);
+           h.obsModel = cell(n,1);
            for i = 1:n  %normalization of every row to fit stochastic constraints
               h.dynModel(i,:) = h.dynModel(i,:) ./ sum(h.dynModel);
-              
+              h.obsModel{i} = struct('mu', 0, 'sigma', eye(5));
            end
         end
         end
