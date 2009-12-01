@@ -14,12 +14,13 @@ data = dataPrep(data, Fs);
 % train models
 % no. of hidden chosen with respect to no. of phonems
 w = [ ...
-				hmm('start', 5), hmm('stop',  4), ...
-				hmm('left',  4), hmm('right', 3) ...
-			];
+	hmm('start', 5), hmm('stop',  4), ...
+	hmm('left',  4), hmm('right', 3) ...
+];
+
 for i=1:length(w)
 	train_model(w(i));
-end	
+end
 
 c = classifier;
 c.words = w;

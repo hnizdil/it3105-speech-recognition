@@ -39,15 +39,10 @@ end
 hmm.priorHidden = gamma(:,1);
 
 % reestimate transition model
-for i = 1:N
-	denom = sum(gamma(i,1:totalTime-1));
-	for j = 1:N
-		hmm.dynModel(i,j) = sum(xi(i,j,1:totalTime-1)) / denom;
-	end
+hmm.dynModel = sum(xi(:,:,1:totalTime-1), 3) ./ repmat( sum(gamma(:,totalTime-1),2), 1, N );
+% normalization
+hmm.dynModel = hmm.dynModel ./ repmat( sum(hmm.dynModel,2), 1, N );
 
-	% normalization
-	hmm.dynModel(i,:) = hmm.dynModel(i,:) ./ sum(hmm.dynModel);
-end
 %
 % part D
 %
@@ -60,8 +55,15 @@ end
 
 % update mu
 for i = 1:N
-	denom = sum(gamma(i,:));
-	hmm.obsModel{i}.mu = sum(gamma(i,:) .* B(i,1:totalTime-1)) / denom;
-	%TODO
+	mu = sum(gamma(i,:));
+	mu = sum(gamma(i,:) .* B(i,1:totalTime-1)) / mu;
+	hmm.obsModel{i}.mu = mu;
+
+	% TODO
+	%sigma = 0;
+	%for t = 1:totalTime
+	%	sigma = sigma + gamma(i,t) * (B(i,t)-mu)*(B(i,t)-mu)'
+	%end
+
 	hmm.obsModel{i}.sigma = eye(2);
 end
