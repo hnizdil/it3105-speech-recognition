@@ -11,10 +11,16 @@ function [ word ] = recognize( filepath )
 % extract features from data
 data = dataPrep(data, Fs);
 
-% train start model
-hstart = hmm('start', 5);
-train_model(h);
-
+% train models
+% no. of hidden chosen with respect to no. of phonems
+w = [ ...
+				hmm('start', 5), hmm('stop',  4), ...
+				hmm('left',  4), hmm('right', 3) ...
+			];
+for i=1:length(w)
+	train_model(w(i));
+end	
 
 c = classifier;
+c.words = w;
 word = classify(c,data);

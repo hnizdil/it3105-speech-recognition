@@ -6,10 +6,7 @@ classdef classifier
 
 	methods
 		function c = classifier
-			c.words = [ ...
-				hmm('start', 5), hmm('stop',  4), ...
-				hmm('left',  4), hmm('right', 3) ...
-			];
+			c.words = [];
 		end
 
 		function word = classify(obj, data)
