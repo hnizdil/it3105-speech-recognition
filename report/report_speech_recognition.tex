@@ -4,7 +4,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[a4paper,english,11pt,oneside]{article}
+\documentclass[a4paper,english,12pt,oneside]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{graphicx}
@@ -52,7 +52,7 @@ The following document is a report for the project \emph{speech recognition} of 
 As implementation tool for the project we used MATLAB and its programming language. We followed this recommendation in face of the fact that the implementation was going to be related to signal processing and matrix calculations. Both, fields in which MATLAB is extraordinary powerful.
 
 \section{System Description}\label{sec:system}
-The interface of our SRS is provided by a function called \lstinline&recognize&. That takes as argument the path of the soundfile that has to be recognized and gives back a text representation of the word found by the system. The function is actually very small, because it basically just starts the bigger parts of the system. So after reading the sound data from a wav-file with the MATLAB built-in function \lstinline&wavread& these data are processed in a function called \lstinline&dataPrep&. That is the part where the preparation for the following recognition process happens (see section \ref{sec:prep}.
+The interface of our SRS is provided by a function called \lstinline&recognize&. That takes as argument the path of the soundfile that has to be recognized and gives back a text representation of the word found by the system. The function is actually very small, because it basically just starts the bigger parts of the system. So after reading the sound data from a wav-file with the MATLAB built-in function \lstinline&wavread& these data are processed in a function called \lstinline&dataPrep&. That is the part where the preparation for the following recognition process happens (see section \ref{sec:prep}).
 Like it is suggested in the project notes we built a class \lstinline&classifier& that acts like a frame around the recognition process. We instantiate an object of \lstinline&classifier&. As already mentioned in the introduction we use hidden Markov models to model our vocabulary. That means we use one HMM for each word. Therefore there is a class \lstinline&hmm& and the classifier holds 4 objects of this (more in section \ref{sec:hmm}). On the classifier we call its function \lstinline&classify& which checks every model and compares their probabilities to model the really recorded word and give back the word of the model with the highest probability.
 
 %part for something on learning
@@ -63,7 +63,7 @@ As already mentioned before the data preparation happens in the function \lstinl
 \begin{figure}[htbp]
 	\centering
 		\subfigure[][Signal in time domain]{\includegraphics[width=0.7\textwidth]{signal.jpg}}
-		\subfigure[][Spectrum (blue) and extracted features (red)]{\includegraphics[width=0.7\textwidth]{spectrum.jpg}}
+		\subfigure[][Spectrum (blue) and extracted features (red crosses)]{\includegraphics[width=0.7\textwidth]{spectrum.jpg}}
 	\label{fig:frame}
 	\caption{Frame 2 of file \lstinline&stop_1.wav&}
 \end{figure}
@@ -72,10 +72,8 @@ As already mentioned before the data preparation happens in the function \lstinl
 Part two of the project was the building of the basic recognition system except of filling it with wise values for the different models (for that see section \ref{sec:learn}). The recognition system is basically encapsulated in the class \lstinline&classifier&, like already discussed in section \ref{sec:system}. The core of the recognition lays in the HMMs which are realised in a class \lstinline&hmm&. In the design we followed the suggestion from the project notes as well as we took over the \lstinline&forwardHMM& function with just one or two adjustments, for example, the return of matrix \textbf{B} (used for learning). In there a \lstinline&calcLikelihood& called function is used to calculate the likelihood of the observed data. This function applies a multivariate normal (Gaussian) distribution (no mixture of several distributions) to every feature entry. That means we get one likelihood for each feature. These likelihoods are added up weighted, so that the likelihood of the greatest magnitude in the spectrum influences most.
 
 
-\section{Learning}
-
-\begin{lstlisting}
-\end{lstlisting}
+\section{Learning}\label{sec:learn}
+To have a working SRS the learning of the models must apparently happen before. So before we start the classifier we generate our vocabulary (matrix of HMM) and pass it through a function called \lstinline&train_model&. That function takes the whole data set that is provided for learning. This data set is sent to another function called \lstinline&learn& which is the basic implementation of the learning algorithm. In there the steps a)-e) are applied to the HMM except of d) since we do not use a mixture of Gaussian distributions. The implementation is basically just writing down the formulas showed in the paper.
 
 \end{document}
  
