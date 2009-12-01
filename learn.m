@@ -68,5 +68,8 @@ end
 
 % update mu
 for i = 1:N
-	hmm.obsModel{i}.mu = () / sum(gamma(i, :));
+	denom = sum(gamma(i, :));
+	hmm.obsModel{i}.mu = sum(gamma(i, :) .* B(i, :)) / denom;
+	%TODO
+	hmm.obsModel{i}.sigma = eye;
 end
