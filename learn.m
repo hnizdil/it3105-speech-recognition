@@ -17,26 +17,18 @@ totalTime = size(data, 3);
 % part B
 %
 
-% initialize xi and gamma
-xi = [];
-gamma = [];
-
 % loop through all t
 for t = 1:totalTime-1
-	% denominator
-	denom = 0;
-	for i = 1:N
-		for j = 1:N
-			denom = denom + alphas(i,t) * hmm.dynModel(i,j) * B(j,t+1) * betas(j,t+1);
-		end
-	end
-	% xi at time t calculations
-	for i = 1:N
-		for j = 1:N
-			xi(i,j,t) = ( alphas(i,t) * hmm.dynModel(i,j) * B(j,t+1) * betas(j,t+1) ) / denom;
-		end
-		gamma(i,t) = sum(xi(i,:,t));
-	end
+	% xi
+	xi(:,:,t) = hmm.dynModel ...
+		.* repmat( alphas(:,t),   1, N ) ...
+		.* repmat( B(:,t+1)',     N, 1 ) ...
+		.* repmat( betas(:,t+1)', N, 1 );
+
+	xi(:,:,t) = xi(:,:,t) / sum(sum(xi(:,:,t)));
+
+	% gamma
+	gamma(:,t) = sum(xi(:,:,t), 2);
 end
 
 %
@@ -52,6 +44,8 @@ for i = 1:N
 	for j = 1:N
 		hmm.dynModel(i,j) = sum(xi(i,j,1:totalTime-1)) / denom;
 	end
+
+	% normalization
 	hmm.dynModel(i,:) = hmm.dynModel(i,:) ./ sum(hmm.dynModel);
 end
 %

@@ -11,18 +11,10 @@ function [ word ] = recognize( filepath )
 % extract features from data
 data = dataPrep(data, Fs);
 
-h = hmm('start',5);
-
+% train start model
+hstart = hmm('start', 5);
 train_model(h);
-return;
 
-for i = 1:50
-learn(h,data);
-forwardHMM(h,data)
-end
-
-return;
 
 c = classifier;
-
 word = classify(c,data);

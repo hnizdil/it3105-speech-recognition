@@ -1,7 +1,7 @@
 function [ ] = train_model(model)
 
 dir = 'wav';
-range = 0:10;
+range = 0:0;
 thresh = 1e-3;
 maxiter = 100;
 
