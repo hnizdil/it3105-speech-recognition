@@ -16,11 +16,12 @@ classdef classifier
 			% threshold for recognizing a word (?)
 			maxP = 0;
 			hmmIndex = 0;
+
 			% go through all hmm and compare probability
 			for i = 1:size(obj.words,2)
 				h = obj.words(i);
-				h.myWord;
-				[l f] = forwardHMM(h, data);
+				h.myWord; % what does this do?
+				[ l ] = forwardHMM(h, data);
 				P = exp(l);
 				if (P > maxP)
 					maxP = P;
