@@ -69,7 +69,10 @@ As already mentioned before the data preparation happens in the function \lstinl
 \end{figure}
 
 \section{Recognition Framework}\label{sec:hmm}
-Part two of the project was the building of the basic recognition system except of filling it with wise values for the different models (for that see section \ref{sec:learn}). The recognition system is basically encapsulated in the class \lstinline&classifier&, like already discussed in section \ref{sec:system}. The core of the recognition lays in the HMMs which are realised in a class \lstinline&hmm&. In the design we followed the suggestion from the project notes as well as we took over the \lstinline&forwardHMM& function with just one or two adjustments. In there a \lstinline&calcLikelihood& called function is used to calculate the likelihood of the observed data. This function applies a multivariate normal (Gaussian) distribution (no mixture of several distributions) to every feature entry. That means we get one likelihood for each feature. These likelihoods are added up weighted, so that the likelihood of the greatest magnitude in the spectrum influences most.
+Part two of the project was the building of the basic recognition system except of filling it with wise values for the different models (for that see section \ref{sec:learn}). The recognition system is basically encapsulated in the class \lstinline&classifier&, like already discussed in section \ref{sec:system}. The core of the recognition lays in the HMMs which are realised in a class \lstinline&hmm&. In the design we followed the suggestion from the project notes as well as we took over the \lstinline&forwardHMM& function with just one or two adjustments, for example, the return of matrix \textbf{B} (used for learning). In there a \lstinline&calcLikelihood& called function is used to calculate the likelihood of the observed data. This function applies a multivariate normal (Gaussian) distribution (no mixture of several distributions) to every feature entry. That means we get one likelihood for each feature. These likelihoods are added up weighted, so that the likelihood of the greatest magnitude in the spectrum influences most.
+
+
+\section{Learning}
 
 \begin{lstlisting}
 \end{lstlisting}
