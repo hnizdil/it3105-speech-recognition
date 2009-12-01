@@ -1,24 +1,25 @@
-function [log_lik fwd_messages obsVec] = forwardHMM(hmm, data)
+function [ log_lik alphas B ] = forwardHMM(hmm, data)
 
+log_lik = 0;
 totalTime = size(data,3);
-fwd_messages = zeros(hmm.noHidden, totalTime);
+alphas = zeros(hmm.noHidden, totalTime);
 
 for t = 0:totalTime-1
 	% Calculate the observation matrix.
 	% This amounts to calculating likelihoods based on observation model.
-	for state = 1:hmm.noHidden
-		obsVec(state, t+1) = calcLikelihood(data(:,:,t+1), hmm.obsModel{state});
+	for s = 1:hmm.noHidden
+		B(s,t+1) = calcLikelihood(data(:,:,t+1), hmm.obsModel{s});
 	end
 
 	% Do forward iterations
 	if t==0
-		fwd_messages(:, t+1) = diag(obsVec(:, t+1)) * hmm.priorHidden;
+		alphas(:, t+1) = diag(B(:,t+1)) * hmm.priorHidden;
 	else
-		fwd_messages(:, t+1) = diag(obsVec(:, t+1)) * hmm.dynModel' * fwd_messages(:,t);
+		alphas(:, t+1) = diag(B(:,t+1)) * hmm.dynModel' * alphas(:,t);
 	end
 
-	% Normalize:
-	normalizer = sum(fwd_messages(:, t+1));
-	log_lik = log(normalizer);
-	fwd_messages(:, t+1) = fwd_messages(:, t+1) ./ normalizer;
+	% Normalize
+	normalizer = sum(alphas(:, t+1));
+	log_lik = log_lik + log(normalizer);
+	alphas(:, t+1) = alphas(:, t+1) ./ normalizer;
 end
