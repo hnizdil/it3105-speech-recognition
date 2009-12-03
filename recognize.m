@@ -11,6 +11,8 @@ function [ word ] = recognize( filepath )
 % extract features from data
 data = dataPrep(data, Fs);
 
+return
+
 % train models
 % no. of hidden chosen with respect to no. of phonems
 w = [ ...
