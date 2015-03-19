@@ -1,0 +1,1 @@
+Last project for the NTNU AI course
